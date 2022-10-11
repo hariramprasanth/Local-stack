@@ -1,0 +1,4 @@
+aws --endpoint-url=http://localhost:4566/ iam create-user --user-name local-admin-user --permissions-boundary arn:aws:iam::aws:policy/AWSAccountManagementFullAccess
+aws --endpoint-url=http://localhost:4566/ iam create-access-key  --user-name local-admin-user
+
+aws --endpoint-url=http://localhost:4566/ sts get-session-token

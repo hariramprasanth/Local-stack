@@ -1,0 +1,69 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  My SAM-app
+
+Globals:
+  Function:
+    Timeout: 3
+Parameters:
+  EnvName:
+    Type: String
+    Description: The environment you're deploying to.
+
+Resources:
+
+  MySamApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: my-sam-api
+      Description: This API is created using SAM
+      StageName: Prod
+      Cors:
+        AllowMethods: "'POST, GET, OPTIONS, PUT'"
+        AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+        AllowOrigin: "'*'"
+      EndpointConfiguration:
+        Type: REGIONAL
+
+  MySamPostItemLambda: 
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub "my-sam-post-item-lambda-${EnvName}"
+      Policies:
+        - AmazonDynamoDBFullAccess
+      Runtime: nodejs14.x
+      Handler: index.handler
+      CodeUri: ./post-item-lambda
+      Events:
+        MySamApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MySamApi
+            Path: /post-item
+            Method: POST
+
+  MySamGetItemLambda: 
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub "my-sam-get-item-lambda-${EnvName}"
+      Policies:
+        - AmazonDynamoDBFullAccess
+      Runtime: nodejs14.x
+      Handler: index.handler
+      CodeUri: ./get-item-lambda
+      Events:
+        MySamApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MySamApi
+            Path: /get-item
+            Method: GET
+
+  MySamTable:
+    Type: AWS::Serverless::SimpleTable 
+    Properties:
+      TableName: my-sam-table
+      PrimaryKey:
+        Name: id
+        Type: String

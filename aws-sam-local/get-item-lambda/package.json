@@ -1,0 +1,17 @@
+{
+	"name": "sam-lambda-artifacts",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"devDependencies": {
+		"aws-sdk": "^2.829.0"
+	},
+	"dependencies": {
+		"aws-sdk": "^2.829.0"
+	},
+	"scripts": {
+		"test": "jest"
+	},
+	"author": "",
+	"license": "ISC"
+}
