@@ -17,3 +17,6 @@ get-item ===>path
 
 
 http://localhost:4566/restapis/dcgqkb9c9n/prod/_user_request_/get-item
+To run docker locally
+docker run -p 8000:8000 amazon/dynamodb-local -jar DynamoDBLocal.jar
+ -sharedDb
